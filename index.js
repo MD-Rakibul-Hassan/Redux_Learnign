@@ -1,5 +1,6 @@
 
-const { createStore, combineReducers } = require('redux');
+const { createStore, combineReducers,applyMiddleware } = require('redux');
+const { default: logger } = require('redux-logger');
 
 // Initalize Actions //
 const INCREMENT = "INCREMENT";
@@ -71,7 +72,7 @@ const rootReducer = combineReducers({
 	userR:userReducer
 })
 // create store
-const store = createStore(rootReducer);
+const store = createStore(rootReducer,applyMiddleware(logger));
 // const store1 = createStore(userReducer);
 
 store.subscribe(() => {
