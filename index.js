@@ -25,16 +25,17 @@ const incrimentCounterAction = () => {
 		type: INCREMENT,
 	};
 };
-const decrimentCounterAction = () => {
+const decrimentCounterAction = (value) => {
     return {
-		type: DECRIMENT
+		type: DECRIMENT,
+		payload:value,
 	}
 }
 
-const addUser = () => {
+const addUser = (value) => {
     return {
         type: ADD_USER,
-        payload : {name: "Shehab"}
+        payload : value,
     }
 }
 
@@ -49,10 +50,18 @@ const counterReducer = (state = initalCounter, action) => {
 		case DECRIMENT:
 			return {
 				...state,
-				count: state.count - 1,
+				count: state.count - action.payload,
 			};
 		default:
 			return state;
+	}
+};
+
+const userReducer = (state = initalUser, action) => {
+	if (action.type === ADD_USER) {
+		return {
+			user: [...state.user, action.payload]
+		}
 	}
 };
 
@@ -60,9 +69,13 @@ const counterReducer = (state = initalCounter, action) => {
 
 // create store
 const store = createStore(counterReducer);
+const store1 = createStore(userReducer);
 
 store.subscribe(() => {
-    console.log(store.getState(),"Subcribe")
+    console.log(store.getState())
+})
+store1.subscribe(() => {
+    console.log(store1.getState())
 })
 
 // Dispatch Action //
@@ -70,7 +83,7 @@ store.dispatch(incrimentCounterAction())
 store.dispatch(incrimentCounterAction())
 store.dispatch(incrimentCounterAction())
 store.dispatch(incrimentCounterAction())
-store.dispatch(decrimentCounterAction())
+store.dispatch(incrimentCounterAction())
+store.dispatch(decrimentCounterAction(5))
 
-
-
+store1.dispatch(addUser({ name: "Shehab" }));
