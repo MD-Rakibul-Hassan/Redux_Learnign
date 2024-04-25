@@ -1,5 +1,5 @@
 
-const { createStore } = require('redux');
+const { createStore, combineReducers } = require('redux');
 
 // Initalize Actions //
 const INCREMENT = "INCREMENT";
@@ -59,24 +59,25 @@ const counterReducer = (state = initalCounter, action) => {
 
 const userReducer = (state = initalUser, action) => {
 	if (action.type === ADD_USER) {
-		return {
-			user: [...state.user, action.payload]
-		}
+		return [...state.user,action.payload]
 	}
+	return state
 };
 
 // Store methods = getState(),dispatch(),subcribe()//
-
+// CombineReducers 
+const rootReducer = combineReducers({
+	countR: counterReducer,
+	userR:userReducer
+})
 // create store
-const store = createStore(counterReducer);
-const store1 = createStore(userReducer);
+const store = createStore(rootReducer);
+// const store1 = createStore(userReducer);
 
 store.subscribe(() => {
     console.log(store.getState())
 })
-store1.subscribe(() => {
-    console.log(store1.getState())
-})
+
 
 // Dispatch Action //
 store.dispatch(incrimentCounterAction())
@@ -86,4 +87,4 @@ store.dispatch(incrimentCounterAction())
 store.dispatch(incrimentCounterAction())
 store.dispatch(decrimentCounterAction(5))
 
-store1.dispatch(addUser({ name: "Shehab" }));
+store.dispatch(addUser({ name: "Shehab" }));
